@@ -155,6 +155,11 @@ impl NatsClient {
         Ok(())
     }
 
+    pub async fn connection_state(&self) -> NatsClientState {
+        let state = self.inner.state.read().await;
+        (*state).clone()
+    }
+
     pub (in crate::nats_client) async fn on_reconnect(&self) -> () {
         let handlers = self.reconnect_handlers.read().await;
         let handlers: &Vec<ReconnectHandler> = handlers.as_ref();
